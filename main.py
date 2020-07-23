@@ -10,7 +10,7 @@ while True:
     webpage = requests.get(URL.format(page))
     soup = BeautifulSoup(webpage.content, "html.parser")
 
-    # 테이블 콘텐츠 확인
+    # 테이블 리스트 존재 확인
     table_lists = soup.find_all("li", {"class": "list-item"})
     if len(table_lists) == 0:
         break
@@ -22,12 +22,20 @@ while True:
     for area in areas_with_markup:
         areas.append(area.text.strip())
 
-    # 회사
+    # 택시회사
     companies_with_markup = soup.find_all("div", {"class": "wr-subject"})
     companies = []
 
     for company in companies_with_markup:
         companies.append(company.text.strip())
+
+    # 택시 수
+    taxis = []
+    for link in links:
+        taxi_webpage = requests.get(link)
+        taxi_soup = BeautifulSoup(taxi_webpage.content, "html.parser")
+        taxi = taxi_soup.find("div", {"class": "col-sm-4 col-xs-3 en font-16"})
+        taxis.append(taxi.text.strip())
 
     # 주소
     addresses_with_markup = soup.find_all("div", {"class": "wr-wr_1 hidden-xs"})
@@ -50,19 +58,11 @@ while True:
         children = link['href']
         links.append(children)
 
-    # 인기도
+    # 채용 공고 조회수
     hits_with_markup = soup.find_all("div", {"class": "wr-hit hidden-xs"})
     hits = []
     for hit in hits_with_markup:
         hits.append(hit.text.strip())
-
-    # 택시회사 수
-    taxis = []
-    for link in links:
-        taxi_webpage = requests.get(link)
-        taxi_soup = BeautifulSoup(taxi_webpage.content, "html.parser")
-        taxi = taxi_soup.find("div", {"class": "col-sm-4 col-xs-3 en font-16"})
-        taxis.append(taxi.text.strip())
 
     # 출력
     for number in range(0, len(areas)):
