@@ -4,18 +4,17 @@ from bs4 import BeautifulSoup
 URL = "http://www.stj.or.kr/bbs/board.php?bo_table=branch&page="
 print("지역", "회사명", "택시 수", "주소", "연락처", "채용공고", "채용공고 조회수", sep=" | ")
 
-i = 0
-recurrence = True
+page = 0
 
-while recurrence:
-    i = i + 1
-    webpage = requests.get(URL + str(i))
+while True:
+    page += 1
+    webpage = requests.get(URL + str(page))
     soup = BeautifulSoup(webpage.content, "html.parser")
 
     # 테이블 콘텐츠 확인
     table_lists = soup.find_all("li", {"class": "list-item"})
     if table_lists == []:
-        recurrence : False
+        break
 
     # 지역
     areas_with_markup = soup.find_all("div", {"class": "wr-category"})
