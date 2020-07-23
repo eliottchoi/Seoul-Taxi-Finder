@@ -5,15 +5,14 @@ URL = "http://www.stj.or.kr/bbs/board.php?bo_table=branch&page="
 print("지역", "회사명", "택시 수", "주소", "연락처", "채용공고", "채용공고 조회수", sep=" | ")
 
 page = 0
-
 while True:
     page += 1
-    webpage = requests.get(URL + str(page))
+    webpage = requests.get(URL + format(page))
     soup = BeautifulSoup(webpage.content, "html.parser")
 
     # 테이블 콘텐츠 확인
     table_lists = soup.find_all("li", {"class": "list-item"})
-    if table_lists == []:
+    if len(table_lists) == 0:
         break
 
     # 지역
