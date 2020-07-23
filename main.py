@@ -1,13 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 
-URL = "http://www.stj.or.kr/bbs/board.php?bo_table=branch&page="
+URL = "http://www.stj.or.kr/bbs/board.php?bo_table=branch&page={}&"
 print("지역", "회사명", "택시 수", "주소", "연락처", "채용공고", "채용공고 조회수", sep=" | ")
 
 page = 0
 while True:
     page += 1
-    webpage = requests.get(URL + format(page))
+    webpage = requests.get(URL.format(page))
     soup = BeautifulSoup(webpage.content, "html.parser")
 
     # 테이블 콘텐츠 확인
